@@ -16,7 +16,7 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['marathon_database']
 users_collection = db['users']
 images_collection = db['images']
-login_collection = db['login_collection']
+login_collection = db['login']
 
 # Path to Tesseract executable
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -72,15 +72,24 @@ def authenticate():
 
     if user and login_attempt:
         # Authentication successful, redirect to home page
-        return redirect(url_for('home'))
+        return redirect(url_for('fetch'))
     else:
         # Authentication failed, show error message
         error_message = "Invalid bib number or password"
         return render_template('login.html', error_message=error_message)
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
+@app.route('/fetch')
+def fetch():
+    return render_template('fetch_images.html')
+
+@app.route('/fetch_images', methods=['POST'])
+def fetch_images():
+    bib_number = int(request.form['bib_number'])
+    images = []
+    cursor = images_collection.find({"bib_number": bib_number})
+    for image in cursor:
+        images.append(image["image"])
+    return render_template('fetch_images.html', images=images)
 
 
 @app.route('/upload', methods=["GET", "POST"])
