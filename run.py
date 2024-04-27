@@ -30,30 +30,11 @@ def clean_extracted_text(text):
                 numbers.append(number)
     return numbers
 
+# @app.route('/')
+# def register():
+#     return render_template('registration.html') 
+
 @app.route('/')
-def register():
-    return render_template('registration.html')
-
-@app.route('/register', methods=['POST'])
-def register_user():
-    name = request.form['name']
-    email = request.form['email']
-    phone = request.form['phone']
-    bib_number = request.form['bib_number']
-    password = request.form['password']
-
-    # Check if bib number already exists in the database
-    if users_collection.find_one({'bib_number': bib_number}):
-        error_message = "Bib number already exists"
-        return render_template('registration.html', error_message=error_message)
-
-    # Insert user data into MongoDB
-    user_data = {'name': name, 'email': email, 'phone': phone, 'bib_number': bib_number, 'password': password}
-    users_collection.insert_one(user_data)
-
-    return redirect(url_for('login'))
-
-@app.route('/login')
 def login():
     return render_template('login.html')
 
@@ -72,11 +53,37 @@ def authenticate():
 
     if user and login_attempt:
         # Authentication successful, redirect to home page
-        return redirect(url_for('fetch'))
+        return redirect(url_for('home'))
     else:
         # Authentication failed, show error message
         error_message = "Invalid bib number or password"
         return render_template('login.html', error_message=error_message)
+    
+@app.route('/register', methods=['GET','POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        bib_number = request.form['bib_number']
+        password = request.form['password']
+
+        # Check if bib number already exists in the database
+        if users_collection.find_one({'bib_number': bib_number}):
+            error_message = "Bib number already exists"
+            return render_template('registration.html', error_message=error_message)
+
+        # Insert user data into MongoDB
+        user_data = {'name': name, 'email': email, 'phone': phone, 'bib_number': bib_number, 'password': password}
+        users_collection.insert_one(user_data)
+
+        return redirect(url_for('login'))
+
+    return render_template('registration.html')
+
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 @app.route('/fetch')
 def fetch():
@@ -89,49 +96,58 @@ def fetch_images():
     cursor = images_collection.find({"bib_number": bib_number})
     for image in cursor:
         images.append(image["image"])
-    return render_template('fetch_images.html', images=images)
+    return render_template('fetch_images.html', images=images, bib_number=bib_number)
 
+
+from flask import render_template, request
 
 @app.route('/upload', methods=["GET", "POST"])
 def upload():
+    error = None
+    success = None
+
     if request.method == "POST":
         if 'file' not in request.files:
-            return jsonify({'error': 'No file part'}), 400
-        
-        file = request.files['file']
-        if file.filename == '':
-            return jsonify({'error': 'No selected file'}), 400
-        
-        # Read the image file
-        img = Image.open(file)
+            error = 'No file part'
+        else:
+            file = request.files['file']
+            if file.filename == '':
+                error = 'No selected file'
+            else:
+                img = Image.open(file)
 
-        result = pytesseract.image_to_string(img, config='--psm 6 outputbase digits')
-        print("Detected Numbers:", result)
-        
-        # Clean the extracted text to get numbers
-        numbers = clean_extracted_text(result)
-        
-        if not numbers:
-            return jsonify({'error': 'No valid number found in the image'}), 400
-        
-        # Convert image to base64 string
-        buffered = BytesIO()
-        img.save(buffered, format="JPEG")
-        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        
-        # Create dictionary to store number and image data
-        data = {
-            "number": numbers[0],  # Assuming there is only one valid number
-            "image": f"data:image/jpeg;base64,{img_str}"
-        }
-        
-        # Insert data into MongoDB collection
-        images_collection.insert_one(data)
-        
-        return jsonify({'message': 'Image and number successfully added to the database'}), 201
-    
-    # If GET request, return HTML form to upload image
-    return render_template('upload.html')
+                # Check if the uploaded file is an image (JPEG, JPG, or PNG)
+                allowed_formats = ['JPEG', 'JPG', 'PNG']
+                if img.format not in allowed_formats:
+                    error = 'Unsupported file format. Please upload an image in JPEG, JPG, or PNG format.'
+                else:
+                    result = pytesseract.image_to_string(img, config='--psm 6 outputbase digits')
+                    
+                    # Clean the extracted text to get numbers
+                    numbers = clean_extracted_text(result)
+                    
+                    if not numbers:
+                        error = 'No valid number found in the image'
+                    else:
+                        # Convert image to base64 string
+                        buffered = BytesIO()
+                        img.save(buffered, format="JPEG")
+                        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+                        
+                        # Create dictionary to store number and image data
+                        data = {
+                            "bib_number": numbers[0],  # Assuming there is only one valid number,
+                            "file_name": file.filename, # Assuming there is only one valid
+                            "image": f"data:image/jpeg;base64,{img_str}"
+                        }
+                        
+                        # Insert data into MongoDB collection
+                        images_collection.insert_one(data)
+                        
+                        success = 'Image uploaded successfully.'
+
+    return render_template('upload.html', error=error, success=success)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

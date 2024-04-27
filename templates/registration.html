@@ -3,52 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Registration - AI-Powered Memories</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-image: url('https://s.abcnews.com/images/Health/marathon-chicago-gty-lv-231012_1697144707319_hpMain_16x9_1600.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Ensure the background covers the entire viewport width */
         }
+
         .container {
-            max-width: 600px;
-            margin: 50px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .card {
+            width: 400px;
             padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            animation: fadeInUp 1s ease;
         }
-        input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
+
+        .card-header {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
             border-radius: 5px;
         }
-        input[type="submit"] {
+
+        .btn-login {
             width: 100%;
-            padding: 10px;
+            border-radius: 5px;
             background-color: #007bff;
             color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            font-weight: bold;
             transition: background-color 0.3s ease;
         }
-        input[type="submit"]:hover {
+
+        .btn-login:hover {
             background-color: #0056b3;
+        }
+
+        .btn-register {
+            width: 100%;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background-color: #218838;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .footer a {
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #0056b3;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Registration</h2>
-        <form action="/register" method="post">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="tel" name="phone" placeholder="Phone Number" required>
-            <input type="text" name="bib_number" placeholder="Bib Number" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Register">
-        </form>
+        <div class="card">
+            <div class="card-header">
+                <h3>Registration - AI-Powered Memories</h3>
+            </div>
+            <div class="card-body">
+                <form action="/register" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" name="phone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="bib_number" placeholder="Bib Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-register">Register</button>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <p>Already have an account? <a href="/">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>AI-Powered Memories &copy; 2024. All rights reserved.</p>
     </div>
 </body>
 </html>

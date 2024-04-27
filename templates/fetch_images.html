@@ -83,24 +83,26 @@
 </head>
 <body>
     <div class="container">
-        <h2>Fetch Images</h2>
+        <h2>Search Images</h2>
         <form action="/fetch_images" method="post">
             <input type="text" name="bib_number" placeholder="Enter Bib Number" required>
             <input type="submit" value="Fetch Images">
         </form>
-        <div class="images">
-            <h2>Images for Bib Number: {{ bib_number }}</h2>
-            {% if images %}
+        {% if images %}
+            <div class="images">
+                <h2>Images for Bib Number: {{ bib_number }}</h2>
                 {% for image in images %}
                     <div class="image-container">
                         <img src="{{ image }}" class="image">
                         <a href="{{ image }}" download="image.jpg" class="download-link">Download</a>
                     </div>
                 {% endfor %}
-            {% else %}
+            </div>
+        {% else %}
+            <div class="images">
                 <p>No images found for the given bib number.</p>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>
