@@ -10,16 +10,20 @@
             background-color: lightblue;
         }
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 50px auto;
             padding: 20px;
             background-color: #f9f9f9;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .image-container {
             margin-bottom: 20px;
             position: relative;
+            width: 500px;
         }
         input[type="text"] {
             width: calc(100% - 20px);
@@ -44,7 +48,6 @@
     
         .image {
             margin-bottom: 20px;
-            margin-bottom: 20px;
             max-width: 500px; /* Set the maximum width of the image */
             max-height: 500px; /* Set the maximum height of the image */
             width: auto; /* Ensure the image maintains its aspect ratio */
@@ -55,8 +58,9 @@
         
         .download-link {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 30px;
+            left: 45%;
+            transform: translateX(-50%);
             background-color: #007bff;
             color: #fff;
             padding: 5px 10px;
@@ -77,8 +81,7 @@
             100% {
                 transform: translateY(-10px);
             }
-        }
-        
+        }  
     </style>
 </head>
 <body>
@@ -86,17 +89,19 @@
         <h2>Search Images</h2>
         <form action="/fetch_images" method="post">
             <input type="text" name="bib_number" placeholder="Enter Bib Number" required>
-            <input type="submit" value="Fetch Images">
+            <input type="submit" value="Search Images">
         </form>
         {% if images %}
-            <div class="images">
+            <div class="images" style="text-align: center;">
                 <h2>Images for Bib Number: {{ bib_number }}</h2>
-                {% for image in images %}
-                    <div class="image-container">
-                        <img src="{{ image }}" class="image">
-                        <a href="{{ image }}" download="image.jpg" class="download-link">Download</a>
-                    </div>
-                {% endfor %}
+                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    {% for image in images %}
+                        <div class="image-container">
+                            <img src="{{ image }}" class="image">
+                            <a href="{{ image }}" download="image.jpg" class="download-link">Download</a>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         {% else %}
             <div class="images">

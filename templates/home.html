@@ -7,23 +7,30 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-image: url('https://images.deccanherald.com/deccanherald/2024-01/8ab748b3-97d4-4ed6-940a-1bdebbc3cdd4/PTI01_21_2024_000093B.jpg?w=1200&h=675&auto=format%2Ccompress&fit=max&enlarge=true');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
             margin: 0;
             padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
             max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 0.5s ease;
         }
 
         h1 {
             text-align: center;
-            color: #007bff;
+            color: #333; /* Change font color */
             margin-bottom: 30px;
         }
 
@@ -31,6 +38,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 20px;
         }
 
         .button-container button {
@@ -40,13 +48,13 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #28a745; /* Change button color */
+            color: #fff; /* Change button text color */
             transition: background-color 0.3s ease;
         }
 
         .button-container button:hover {
-            background-color: #0056b3;
+            background-color: #218838; /* Change button hover color */
         }
 
         @keyframes fadeInDown {
@@ -58,10 +66,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .container {
-            animation: fadeInDown 0.5s ease;
         }
     </style>
 </head>
