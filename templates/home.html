@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('https://images.deccanherald.com/deccanherald/2024-01/8ab748b3-97d4-4ed6-940a-1bdebbc3cdd4/PTI01_21_2024_000093B.jpg?w=1200&h=675&auto=format%2Ccompress&fit=max&enlarge=true');
+            background-image: url('https://i.pinimg.com/564x/18/17/ff/1817ff05de67cb754a468891ef58939f.jpg');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -21,17 +21,19 @@
 
         .container {
             max-width: 800px;
-            padding: 30px;
+            padding: 60px;
             background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
+            border-radius: 30px; 
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             animation: fadeInDown 0.5s ease;
+
         }
 
         h1 {
             text-align: center;
             color: #333; /* Change font color */
             margin-bottom: 30px;
+            font-size: 40px;
         }
 
         .button-container {
@@ -42,12 +44,12 @@
         }
 
         .button-container button {
-            padding: 10px 20px;
+            padding: 20px 30px;
             margin: 0 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 20px;
             background-color: #28a745; /* Change button color */
             color: #fff; /* Change button text color */
             transition: background-color 0.3s ease;
@@ -71,7 +73,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>AI-Powered Memories</h1>
+        <h1><b>AI-Powered Memories</b></h1>
         <div class="button-container">
             <a href="{{ url_for('fetch') }}"><button>Search Images</button></a>
             <a href="{{ url_for('upload') }}"><button>Upload Image</button></a>

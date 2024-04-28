@@ -7,6 +7,7 @@ from pymongo import MongoClient
 import pytesseract
 from PIL import Image
 from flask import render_template, request, redirect, url_for, session
+from werkzeug.security import generate_password_hash, check_password_hash
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 app = Flask(__name__)
@@ -43,15 +44,15 @@ def authenticate():
     bib_number = request.form['bib_number']
     password = request.form['password']
 
-    # Log the login attempt in the login collection
-    login_attempt = {'bib_number': bib_number, 'password': password}
+    # Log the login attempt in the login collection with hashed password
+    hashed_password = generate_password_hash(password)
+    login_attempt = {'bib_number': bib_number, 'password': hashed_password}
     login_collection.insert_one(login_attempt)
 
-    # Check if the provided bib number and password exist in both users_collection and login_collection
-    user = users_collection.find_one({'bib_number': bib_number, 'password': password})
-    login_attempt = login_collection.find_one({'bib_number': bib_number, 'password': password})
+    # Check if the provided bib number exists in users_collection
+    user = users_collection.find_one({'bib_number': bib_number})
 
-    if user and login_attempt:
+    if user and check_password_hash(user['password'], password):
         # Authentication successful, redirect to home page
         return redirect(url_for('home'))
     else:
@@ -72,9 +73,12 @@ def register():
         if users_collection.find_one({'bib_number': bib_number}):
             error_message = "Bib number already exists"
             return render_template('registration.html', error_message=error_message)
+        
+        # Hash the password before storing it in the database
+        hashed_password = generate_password_hash(password)
 
         # Insert user data into MongoDB
-        user_data = {'name': name, 'email': email, 'phone': phone, 'bib_number': bib_number, 'password': password}
+        user_data = {'name': name, 'email': email, 'phone': phone, 'bib_number': bib_number, 'password': hashed_password}
         users_collection.insert_one(user_data)
 
         return redirect(url_for('login'))
