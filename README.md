@@ -31,7 +31,7 @@ To run the Marathon Bib Recognition Project, ensure that you have the following 
 - The connection to the MongoDB database is established in `run.py` using the MongoClient from the pymongo library.
 - By default, the application connects to MongoDB running on `localhost` at port `27017`.
 - You can customize the MongoDB connection URL in `run.py` if your MongoDB server is running on a different host or port.
-- 
+  
 ## Project Structure:
 
 - **run.py:** This file contains the main Flask application code, including routes for registration, login, authentication, image uploading, and image fetching.
