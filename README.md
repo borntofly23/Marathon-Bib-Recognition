@@ -23,6 +23,10 @@ To run the Marathon Bib Recognition Project, ensure that you have the following 
     ```bash
     pip install Pillow
     ```
+6. **werkzeug:** The project uses werkzeug for hashing passwords. Install it using pip:
+    ```bash
+    pip install Werkzeug
+    ```
 
 ## MongoDB Database:
 
@@ -36,11 +40,11 @@ To run the Marathon Bib Recognition Project, ensure that you have the following 
 
 - **run.py:** This file contains the main Flask application code, including routes for registration, login, authentication, image uploading, and image fetching.
 - **templates/:** This directory contains HTML templates used by the Flask application for rendering web pages.
-- **login.html:** HTML template for the login page.
-- **registration.html:** HTML template for the registration page.
-- **home.html:** HTML template for the home page.
-- **upload.html:** HTML template for the image uploading page.
-- **fetch_images.html:** HTML template for displaying fetched images.
+   - **login.html:** HTML template for the login page.
+   - **registration.html:** HTML template for the registration page.
+   - **home.html:** HTML template for the home page.
+   - **upload.html:** HTML template for the image uploading page.
+   - **fetch_images.html:** HTML template for displaying fetched images.
 - **static/:** This directory contains static files such as CSS stylesheets and images used by the HTML templates.
 - **uploads/:** This directory is used to store uploaded images.
 
@@ -61,6 +65,9 @@ To run the Marathon Bib Recognition Project, ensure that you have the following 
 - **Login:** Registered users can log in using their bib number and password.
 - **Image Upload:** Users can upload images containing bib numbers. The application extracts bib numbers from the images using OCR and stores them in the database.
 - **Image Fetching:** Users can fetch images associated with a specific bib number.
+
+## Hashed Password Implementation:
+Passwords are hashed before storing in the database and compared during login using hashed values to enhance security.
 
 ## Contributing:
 Contributions to the Marathon Bib Recognition Project are welcome. If you encounter any issues or have suggestions for improvement, please feel free to submit a pull request or open an issue on the project's GitHub repository.
