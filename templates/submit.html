@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+        }
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-container {
+            margin-bottom: 20px;
+            position: relative;
+            width: 500px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    
+        .image {
+            margin-bottom: 20px;
+            max-width: 500px; /* Set the maximum width of the image */
+            max-height: 500px; /* Set the maximum height of the image */
+            width: auto; /* Ensure the image maintains its aspect ratio */
+            height: auto; /* Ensure the image maintains its aspect ratio */
+            border-radius: 5px; /* Add border radius */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+        }
+        
+        .download-link {
+            position: absolute;
+            bottom: 30px;
+            left: 45%;
+            transform: translateX(-50%);
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            animation: bounce 1s infinite alternate;
+        }
+        .download-link:hover {
+            background-color: #0056b3;
+            transition: background-color 0.3s ease;
+            animation: none;
+        }
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-10px);
+            }
+        }  
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Scanned Bib Number</h2>
+        <form action="/submit_image" method="post">
+            <input type="text" name="bib_number" placeholder="Scanned Bib Number" value="{{ bib_number }}" required>
+            <input type="hidden" name="image" value="{{ image }}">
+            <input type="hidden" name="filename" value="{{ filename }}">
+            <input type="submit" value="Upload Image">
+        </form>
+        {% if image %}
+            <div class="image" style="text-align: center;">
+                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    <div class="image-container">
+                        <img src="{{ image }}" class="image">
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="images">
+                <p>No images found for the given bib number.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

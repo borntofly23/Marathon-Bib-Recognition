@@ -103,12 +103,13 @@ def fetch_images():
     return render_template('fetch_images.html', images=images, bib_number=bib_number)
 
 
-from flask import render_template, request
+from flask import render_template, request, redirect
 
 @app.route('/upload', methods=["GET", "POST"])
 def upload():
     error = None
     success = None
+    image = None
 
     if request.method == "POST":
         if 'file' not in request.files:
@@ -145,13 +146,28 @@ def upload():
                             "image": f"data:image/jpeg;base64,{img_str}"
                         }
                         
-                        # Insert data into MongoDB collection
-                        images_collection.insert_one(data)
-                        
                         success = 'Image uploaded successfully.'
+                        return render_template('submit.html', image=data["image"], bib_number=data["bib_number"], filename=data["file_name"], success=success)
 
-    return render_template('upload.html', error=error, success=success)
+    elif request.method == "GET":
+        return render_template('upload.html', error=error, success=success)
 
+@app.route("/submit_image", methods=["POST"])
+def submit_image():
+
+    bib_number = request.form['bib_number']
+    image = request.form['image']
+    filename = request.form['filename']
+
+    try: 
+        # Insert image data into MongoDB
+        image_data = {'bib_number': bib_number, 'image': image, 'filename': filename}
+        images_collection.insert_one(image_data)
+    except:
+        error = "An error occurred while trying to upload the image. Please try again."
+        return render_template('submit.html', error=error, image=image, bib_number=bib_number, filename=filename)
+
+    return redirect(url_for('upload'))
 
 if __name__ == '__main__':
     app.run(debug=True)
