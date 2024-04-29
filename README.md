@@ -44,6 +44,7 @@ To run the Marathon Bib Recognition Project, ensure that you have the following 
    - **registration.html:** HTML template for the registration page.
    - **home.html:** HTML template for the home page.
    - **upload.html:** HTML template for the image uploading page.
+   - **submit.html:** HTML template for displaying scanned bib number.
    - **fetch_images.html:** HTML template for displaying fetched images.
 - **static/:** This directory contains static files such as CSS stylesheets and images used by the HTML templates.
 - **uploads/:** This directory is used to store uploaded images.
